@@ -9,9 +9,9 @@
     "height": 900,
     "camera": {
         "position": [
-            -0.073,
+            -2.5,
             0.846,
-            1.810
+            3
         ],
         "view": [
             0.545,
@@ -51,7 +51,7 @@
         {
             "name": "tri_plate",
             "type": "file",
-            "path": "./assets/voxelization/tri_plate.obj"
+            "path": "./assets/voxelization/octahedron.obj"
         },
         {
             "name": "plane1",
