@@ -1,7 +1,7 @@
 [submodule "src/engine"]
 	path = src/engine
 	url = https://github.com/Mr-222/render-engine.git
-	branch = for-rtf-vorticity
+	branch = master
 [submodule "src/AMGPCG_Pybind_Torch"]
 	path = src/AMGPCG_Pybind_Torch
 	url = https://github.com/wrc042/AMGPCG_Pybind_Torch.git
