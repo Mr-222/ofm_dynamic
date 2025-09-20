@@ -9,47 +9,63 @@
     "height": 900,
     "camera": {
         "position": [
-            -2.5,
-            0.846,
+            0,
+            0,
             3
         ],
         "view": [
-            0.545,
-            -0.294,
-            -0.785
+            0,
+            0,
+            -1
         ],
         "fov": 60.0,
         "move_speed": 4
     },
     "render_graph": {
         "shader_directory": "../build/shaders",
-        "name": "default"
+        "name": "voxelization"
     },
     "objects": [
         {
-            "name": "tri_plate",
-            "mesh": "tri_plate",
-            "material": "tri_plate_material"
+            "name": "octahedron",
+            "mesh": "octahedron",
+            "material": "octahedron_material",
+            "initial_position": [0, 0, 0],
+            "initial_rotation": [0, 0, 0],
+            "initial_scale": [1, 1, 1],
+            "angular_velocity": [0, 30, 0]
         },
         {
             "name": "plane1",
             "mesh": "plane1",
-            "material": "plane"
+            "material": "plane",
+            "initial_position": [0, 0, 0],
+            "initial_rotation": [0, 0, 0],
+            "initial_scale": [1, 1, 1],
+            "angular_velocity": [0, 0, 0]
         },
         {
             "name": "plane2",
             "mesh": "plane2",
-            "material": "plane"
+            "material": "plane",
+            "initial_position": [0, 0, 0],
+            "initial_rotation": [0, 0, 0],
+            "initial_scale": [1, 1, 1],
+            "angular_velocity": [0, 0, 0]
         },
         {
             "name": "plane3",
             "mesh": "plane3",
-            "material": "plane"
+            "material": "plane",
+            "initial_position": [0, 0, 0],
+            "initial_rotation": [0, 0, 0],
+            "initial_scale": [1, 1, 1],
+            "angular_velocity": [0, 0, 0]
         }
     ],
     "meshes": [
         {
-            "name": "tri_plate",
+            "name": "octahedron",
             "type": "file",
             "path": "./assets/voxelization/octahedron.obj"
         },
@@ -110,7 +126,7 @@
     ],
     "materials": [
         {
-            "name": "tri_plate_material",
+            "name": "octahedron_material",
             "roughness": 1.0,
             "metallic": 0.001,
             "color": [
