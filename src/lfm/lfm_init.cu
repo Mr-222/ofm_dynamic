@@ -6,9 +6,7 @@ void InitLFMAsync(LFM& _lfm, const LFMConfiguration& _config, cudaStream_t _stre
 {
     // alloc
     int3 tile_dim    = { _config.tile_dim[0], _config.tile_dim[1], _config.tile_dim[2] };
-    int reinit_every = _config.reinit_every;
-    int num_smoke    = _config.num_smoke;
-    _lfm.Alloc(tile_dim, reinit_every, num_smoke);
+    _lfm.Alloc(tile_dim);
 
     // simulation parameter
     _lfm.rk_order_ = _config.rk_order;
@@ -61,16 +59,6 @@ void InitLFMAsync(LFM& _lfm, const LFMConfiguration& _config, cudaStream_t _stre
         _lfm.amgpcg_.max_iter_ = 6;
     }
 
-    // smoke
-    if (_lfm.num_smoke_ > 0) {
-        DHMemory<float> init_smoke_np(512 * Prod(tile_dim));
-        for (int i = 0; i < _lfm.num_smoke_; i++) {
-            ReadNpy<float>(_config.init_smoke_path_prefix + std::to_string(i) + ".npy", init_smoke_np.host_ptr_);
-            init_smoke_np.HostToDevAsync(_stream);
-            ConToTileAsync(*_lfm.smoke_[i], tile_dim, init_smoke_np, _stream);
-            DevToDevCpyAsync(_lfm.init_smoke_[i]->dev_ptr_, _lfm.smoke_[i]->dev_ptr_, 512 * Prod(tile_dim), _stream);
-        }
-    }
     // bfecc clamp
     _lfm.use_bfecc_clamp_ = _config.use_bfecc_clamp;
 }

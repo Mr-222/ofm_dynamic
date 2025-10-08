@@ -12,7 +12,6 @@ public:
 
     // simulation parameters
     int rk_order_ = 4;
-    int reinit_every_;
     int step_;
 
     // boundary
@@ -55,9 +54,9 @@ public:
     std::shared_ptr<DHMemory<float>> err_u_x_;
     std::shared_ptr<DHMemory<float>> err_u_y_;
     std::shared_ptr<DHMemory<float>> err_u_z_;
-    std::vector<std::shared_ptr<DHMemory<float>>> mid_u_x_;
-    std::vector<std::shared_ptr<DHMemory<float>>> mid_u_y_;
-    std::vector<std::shared_ptr<DHMemory<float>>> mid_u_z_;
+    std::shared_ptr<DHMemory<float>> mid_u_x_;
+    std::shared_ptr<DHMemory<float>> mid_u_y_;
+    std::shared_ptr<DHMemory<float>> mid_u_z_;
 
     // vorticity
     std::shared_ptr<DHMemory<float>> vor_norm_;
@@ -65,23 +64,12 @@ public:
     // solver
     AMGPCG amgpcg_;
 
-    // smoke
-    int num_smoke_;
-    std::vector<std::shared_ptr<DHMemory<float>>> smoke_;
-    std::vector<std::shared_ptr<DHMemory<float>>> init_smoke_;
-    std::vector<std::shared_ptr<DHMemory<float>>> prev_smoke_;
-    std::vector<std::shared_ptr<DHMemory<float>>> smoke_np_;
-    std::shared_ptr<DHMemory<float>> err_smoke_;
-    std::shared_ptr<DHMemory<float>> tmp_smoke_;
-    std::shared_ptr<DHMemory<float3>> psi_c_;
-    std::shared_ptr<DHMemory<float3>> phi_c_;
-
     // bfecc clamp
     bool use_bfecc_clamp_;
 
     LFM() = default;
-    LFM(int3 _tile_dim, int _reinit_every, int _num_smoke);
-    void Alloc(int3 _tile_dim, int _reinit_every, int _num_smoke);
+    LFM(int3 _tile_dim);
+    void Alloc(int3 _tile_dim);
 
     void AdvanceAsync(float _dt, cudaStream_t _stream);
     void ReinitAsync(float _dt, cudaStream_t _stream);
