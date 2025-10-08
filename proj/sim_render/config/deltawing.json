@@ -241,7 +241,6 @@
         }
     ],
     "lfm": {
-        "reinit_every": 5,
         "len_y": 1.0,
         "tile_dim": [
             32,
@@ -269,8 +268,6 @@
         "init_u_y_path": "./assets/deltawing/init_u_y.npy",
         "init_u_z_path": "./assets/deltawing/init_u_z.npy",
         "rk_order": 4,
-        "num_smoke": 0,
-        "init_smoke_path_prefix": "./assets/deltawing/init_smoke",
         "use_bfecc_clamp": true,
         "use_static_solid": true,
         "solid_sdf_path": "./assets/deltawing/solid_sdf.npy"

@@ -73,10 +73,9 @@ void PhysicsEngineUser::step()
     signalSemaphore(cuUpdateSemaphore);
 
     if (total_frame < 0 || current_frame < total_frame) {
-        float dt          = 1.0f / (frame_rate * lfm_.reinit_every_);
+        float dt          = 1.0f / static_cast<float>(frame_rate);
         lfm_.inlet_angle_ = g_ctx->rm->inlet_angle;
-        for (int i = 0; i < lfm_.reinit_every_; i++)
-            lfm_.AdvanceAsync(dt, streamToRun);
+        lfm_.AdvanceAsync(dt, streamToRun);
         lfm_.ReinitAsync(dt, streamToRun);
         current_frame++;
     }
