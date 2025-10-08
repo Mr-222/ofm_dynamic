@@ -12,7 +12,7 @@ add_requires("vtk 9.3.1")
 set_policy("build.intermediate_directory", false)
 set_runtimes("MD")
 
-includes("sim_render", "voxelization")
+includes("sim_render", "voxelization", "dynamic_obstacle")
 add_options("compile_commands")
 
 option("all")

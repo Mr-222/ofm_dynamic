@@ -1,0 +1,192 @@
+{
+    "name": "Simulator",
+    "engine_directory": "../../src/engine",
+    "logger": {
+        "level": "debug",
+        "output": "logs/log.txt"
+    },
+    "width": 1400,
+    "height": 900,
+    "camera": {
+        "position": [
+            0,
+            0,
+            3
+        ],
+        "view": [
+            0,
+            0,
+            -1
+        ],
+        "fov": 60.0,
+        "move_speed": 4
+    },
+    "render_graph": {
+        "shader_directory": "../build/shaders",
+        "name": "dynamic_obstacle"
+    },
+    "objects": [
+        {
+            "name": "octahedron",
+            "mesh": "octahedron",
+            "material": "octahedron_material",
+            "initial_position": [0, 0, 0],
+            "initial_rotation": [0, 0, 0],
+            "initial_scale": [1, 1, 1],
+            "angular_velocity": [0, 30, 0]
+        },
+        {
+            "name": "plane1",
+            "mesh": "plane1",
+            "material": "plane",
+            "initial_position": [0, 0, 0],
+            "initial_rotation": [0, 0, 0],
+            "initial_scale": [1, 1, 1],
+            "angular_velocity": [0, 0, 0]
+        },
+        {
+            "name": "plane2",
+            "mesh": "plane2",
+            "material": "plane",
+            "initial_position": [0, 0, 0],
+            "initial_rotation": [0, 0, 0],
+            "initial_scale": [1, 1, 1],
+            "angular_velocity": [0, 0, 0]
+        },
+        {
+            "name": "plane3",
+            "mesh": "plane3",
+            "material": "plane",
+            "initial_position": [0, 0, 0],
+            "initial_rotation": [0, 0, 0],
+            "initial_scale": [1, 1, 1],
+            "angular_velocity": [0, 0, 0]
+        }
+    ],
+    "meshes": [
+        {
+            "name": "octahedron",
+            "type": "file",
+            "path": "./assets/dynamic_obstacle/octahedron.obj"
+        },
+        {
+            "name": "plane1",
+            "type": "plane",
+            "pos": [
+                0,
+                -1,
+                0
+            ],
+            "normal": [
+                0,
+                1,
+                0
+            ],
+            "size": [
+                100,
+                100
+            ]
+        },
+        {
+            "name": "plane2",
+            "type": "plane",
+            "pos": [
+                10.5,
+                0,
+                0
+            ],
+            "normal": [
+                -1,
+                0,
+                0
+            ],
+            "size": [
+                100,
+                100
+            ]
+        },
+        {
+            "name": "plane3",
+            "type": "plane",
+            "pos": [
+                0,
+                0,
+                -10
+            ],
+            "normal": [
+                0,
+                0,
+                1
+            ],
+            "size": [
+                100,
+                100
+            ]
+        }
+    ],
+    "materials": [
+        {
+            "name": "octahedron_material",
+            "roughness": 1.0,
+            "metallic": 0.001,
+            "color": [
+                1,
+                1,
+                1
+            ],
+            "color_texture": "default_color",
+            "metallic_texture": "default_metallic",
+            "roughness_texture": "default_roughness",
+            "normal_texture": "default_normal",
+            "ao_texture": "default_ao"
+        },
+        {
+            "name": "plane",
+            "roughness": 0.7,
+            "metallic": 0.01,
+            "color": [
+                0.41,
+                0.41,
+                0.41
+            ],
+            "color_texture": "default_color",
+            "metallic_texture": "default_metallic",
+            "roughness_texture": "default_roughness",
+            "normal_texture": "default_normal",
+            "ao_texture": "default_ao"
+        }
+    ],
+    "textures": [],
+    "lights": [
+        {
+            "posOrDir": [
+                4.07,
+                6.17,
+                -1.005
+            ],
+            "intensity": [
+                137,
+                137,
+                137
+            ]
+        },
+        {
+            "posOrDir": [
+                -4.07,
+                12.17,
+                1.005
+            ],
+            "intensity": [
+                237,
+                237,
+                237
+            ]
+        }
+    ],
+    "recorder": {
+        "output_path": "./temp/output.mp4",
+        "bit_rate": 4000000,
+        "frame_rate": 24,
+        "record_from_start": false
+    }
+}
