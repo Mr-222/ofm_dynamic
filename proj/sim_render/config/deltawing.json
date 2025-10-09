@@ -65,32 +65,9 @@
     ],
     "fields": {
         "step": 0.005,
-        "fire_configuration": {
-            "light_sample_dim": [
-                4,
-                8,
-                4
-            ],
-            "light_sample_avg_region": [
-                7,
-                8,
-                7
-            ],
-            "light_sample_gain": 0.05,
-            "self_illumination_lights": [
-                [
-                    0.5,
-                    0.2,
-                    0.5
-                ]
-            ],
-            "self_illumination_boost": 20.0,
-            "fire_colors_path": "./assets/fire_colors.npy"
-        },
         "arr": [
             {
                 "name": "vorticity",
-                "path": "./assets/deltawing/0.npy",
                 "data_type": "concentration",
                 "start_pos": [
                     0,
@@ -264,9 +241,6 @@
         ],
         "inlet_norm": 0.6,
         "inlet_angle": 20,
-        "init_u_x_path": "./assets/deltawing/init_u_x.npy",
-        "init_u_y_path": "./assets/deltawing/init_u_y.npy",
-        "init_u_z_path": "./assets/deltawing/init_u_z.npy",
         "rk_order": 4,
         "use_bfecc_clamp": true,
         "use_static_solid": true,

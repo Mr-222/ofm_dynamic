@@ -38,18 +38,6 @@ void InitLFMAsync(LFM& _lfm, const LFMConfiguration& _config, cudaStream_t _stre
         SetBcByPhiAsync(*_lfm.is_bc_x_, *_lfm.is_bc_y_, *_lfm.is_bc_z_, *_lfm.bc_val_x_, *_lfm.bc_val_y_, *_lfm.bc_val_z_, tile_dim, solid_sdf, _stream);
     }
 
-    // init velocity
-    DHMemory<float> init_u_x_np((8 * tile_dim.x + 1) * (8 * tile_dim.y) * (8 * tile_dim.z));
-    DHMemory<float> init_u_y_np((8 * tile_dim.x) * (8 * tile_dim.y + 1) * (8 * tile_dim.z));
-    DHMemory<float> init_u_z_np((8 * tile_dim.x) * (8 * tile_dim.y) * (8 * tile_dim.z + 1));
-    ReadNpy<float>(_config.init_u_x_path, init_u_x_np.host_ptr_);
-    ReadNpy<float>(_config.init_u_y_path, init_u_y_np.host_ptr_);
-    ReadNpy<float>(_config.init_u_z_path, init_u_z_np.host_ptr_);
-    init_u_x_np.HostToDevAsync(_stream);
-    init_u_y_np.HostToDevAsync(_stream);
-    init_u_z_np.HostToDevAsync(_stream);
-
-    StagConToTileAsync(*_lfm.init_u_x_, *_lfm.init_u_y_, *_lfm.init_u_z_, tile_dim, init_u_x_np, init_u_y_np, init_u_z_np, _stream);
     // poisson
     {
         SetCoefByIsBcAsync(*(_lfm.amgpcg_.poisson_vector_[0].is_dof_), *(_lfm.amgpcg_.poisson_vector_[0].a_diag_), *(_lfm.amgpcg_.poisson_vector_[0].a_x_), *(_lfm.amgpcg_.poisson_vector_[0].a_y_),

@@ -9,9 +9,9 @@
     "height": 900,
     "camera": {
         "position": [
-            0,
-            0,
-            3
+            0.5,
+            0.5,
+            1.5
         ],
         "view": [
             0,
@@ -30,10 +30,10 @@
             "name": "octahedron",
             "mesh": "octahedron",
             "material": "octahedron_material",
-            "initial_position": [0, 0, 0],
+            "initial_position": [0.5, 0.5, 0],
             "initial_rotation": [0, 0, 0],
-            "initial_scale": [1, 1, 1],
-            "angular_velocity": [0, 30, 0]
+            "initial_scale": [0.25, 0.25, 0.25],
+            "angular_velocity": [0, 0, 0]
         },
         {
             "name": "plane1",
@@ -124,6 +124,40 @@
             ]
         }
     ],
+    "fields": {
+        "step": 0.005,
+        "arr": [
+            {
+                "name": "vorticity",
+                "data_type": "concentration",
+                "start_pos": [
+                    0,
+                    0,
+                    0
+                ],
+                "size": [
+                    2,
+                    1,
+                    1
+                ],
+                "dimension": [
+                    256,
+                    128,
+                    128
+                ],
+                "scatter": [
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                "absorption": [
+                    0.6,
+                    0.6,
+                    0.6
+                ]
+            }
+        ]
+    },
     "materials": [
         {
             "name": "octahedron_material",
@@ -183,6 +217,40 @@
             ]
         }
     ],
+    "lfm": {
+        "len_y": 1.0,
+        "tile_dim": [
+            32,
+            16,
+            16
+        ],
+        "grid_origin": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "neg_bc_type": [
+            1,
+            1,
+            1
+        ],
+        "pos_bc_type": [
+            1,
+            1,
+            1
+        ],
+        "inlet_norm": 0.6,
+        "inlet_angle": 20,
+        "rk_order": 4,
+        "use_bfecc_clamp": true,
+        "use_static_solid": false,
+        "solid_sdf_path": ""
+    },
+    "driver": {
+        "total_frame": -1,
+        "frame_rate": 20,
+        "steps_per_frame": 5
+    },
     "recorder": {
         "output_path": "./temp/output.mp4",
         "bit_rate": 4000000,

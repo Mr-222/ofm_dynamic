@@ -2,7 +2,6 @@
 
 #include "function/physics/cuda_engine.h"
 #include "lfm.h"
-#include <glm/glm.hpp>
 
 class PhysicsEngineUser : public CudaEngine {
     lfm::LFM lfm_;
