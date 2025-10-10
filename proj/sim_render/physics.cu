@@ -29,6 +29,7 @@ void PhysicsEngineUser::initExternalMem()
             256,
             128,
             128,
+            field.field_img.format,
             field.name
         };
         this->importExtImage(image_desc); // add to extBuffers internally

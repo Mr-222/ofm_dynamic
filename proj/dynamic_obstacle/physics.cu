@@ -1,7 +1,5 @@
 #include "function/global_context.h"
 #include "function/resource_manager/resource_manager.h"
-#include "function/tool/fire_light_updater.h"
-#include "function/type/vertex.h"
 #include "lfm_init.h"
 #include "lfm_util.h"
 #include "physics.h"
@@ -29,10 +27,56 @@ void PhysicsEngineUser::initExternalMem()
             256,
             128,
             128,
+            field.field_img.format,
             field.name
         };
         this->importExtImage(image_desc); // add to extBuffers internally
     }
+
+    assert(g_ctx->rm->textures.contains("voxel"));
+    assert(g_ctx->rm->textures.contains("velocity"));
+    const Vk::Image& voxel_image    = g_ctx->rm->textures["voxel"].image;
+    const Vk::Image& velocity_image = g_ctx->rm->textures["velocity"].image;
+
+#ifdef _WIN64
+    HANDLE handle_voxel = voxel_image.getVkMemHandle(g_ctx->vk);
+    HANDLE handle_velocity = velocity_image.getVkMemHandle(g_ctx->vk);
+#else
+    int fd_voxel = voxel_image.getVkMemHandle(g_ctx->vk);
+    int fd_velocity = velocity_image.getVkMemHandle(g_ctx->vk);
+#endif
+
+    CudaEngine::ExtImageDesc image_desc_voxel = {
+#ifdef _WIN64
+        handle_voxel,
+#else
+        fd_voxel,
+#endif
+        voxel_image.extent.width * voxel_image.extent.height * voxel_image.numLayers * sizeof(uint8_t),
+        sizeof(uint8_t),
+        voxel_image.extent.width,
+        voxel_image.extent.height,
+        voxel_image.numLayers,
+        voxel_image.format,
+        "voxel"
+    };
+    this->importExtImage(image_desc_voxel);
+
+    CudaEngine::ExtImageDesc image_desc_velocity = {
+#ifdef _WIN64
+        handle_velocity,
+#else
+        fd_velocity,
+#endif
+        velocity_image.extent.width * velocity_image.extent.height * velocity_image.numLayers * 8, // R16G16B16A16
+        8,
+        velocity_image.extent.width,
+        velocity_image.extent.height,
+        velocity_image.numLayers,
+        velocity_image.format,
+        "velocity"
+    };
+    this->importExtImage(image_desc_velocity);
 }
 
 void PhysicsEngineUser::init(Configuration& config, GlobalContext* g_ctx)
