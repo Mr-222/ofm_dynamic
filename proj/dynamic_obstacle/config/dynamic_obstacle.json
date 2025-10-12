@@ -21,6 +21,23 @@
         "fov": 60.0,
         "move_speed": 4
     },
+    "voxelizer": {
+        "start_pos":  [
+            0,
+            0,
+            0
+        ],
+        "size": [
+            2,
+            1,
+            1
+        ],
+        "dimension": [
+            256,
+            128,
+            128
+        ]
+    },
     "render_graph": {
         "shader_directory": "../build/shaders",
         "name": "dynamic_obstacle"
@@ -30,7 +47,7 @@
             "name": "octahedron",
             "mesh": "octahedron",
             "material": "octahedron_material",
-            "initial_position": [0.5, 0.5, 0],
+            "initial_position": [1, 0.5, 0.5],
             "initial_rotation": [0, 0, 0],
             "initial_scale": [0.25, 0.25, 0.25],
             "angular_velocity": [0, 0, 0]

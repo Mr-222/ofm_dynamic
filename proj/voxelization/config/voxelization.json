@@ -21,6 +21,23 @@
         "fov": 60.0,
         "move_speed": 4
     },
+    "voxelizer": {
+        "start_pos": [
+            -2,
+            -3,
+            -2
+        ],
+        "size": [
+            4,
+            6,
+            4
+        ],
+        "dimension": [
+            256,
+            256,
+            256
+        ]
+    },
     "render_graph": {
         "shader_directory": "../build/shaders",
         "name": "voxelization"
