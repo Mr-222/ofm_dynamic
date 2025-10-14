@@ -3,9 +3,7 @@
 #include "lfm_init.h"
 #include "lfm_util.h"
 #include "physics.h"
-#include <cstdio>
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
 void PhysicsEngineUser::initExternalMem()
 {
@@ -87,6 +85,12 @@ void PhysicsEngineUser::init(Configuration& config, GlobalContext* g_ctx)
     frame_rate      = driver_cfg.frame_rate;
     steps_per_frame = driver_cfg.steps_per_frame;
     current_frame   = 0;
+    if (static_cast<LFMConfiguration>(config.at("lfm")).use_dynamic_solid) {
+        assert(extImages.contains("voxel"));
+        assert(extImages.contains("velocity"));
+        lfm_.voxel_tex_         = extImages.at("voxel").surface_object;
+        lfm_.velocity_tex_      = extImages.at("velocity").surface_object;
+    }
     lfm::InitLFMAsync(lfm_, config.at("lfm"), streamToRun);
 }
 

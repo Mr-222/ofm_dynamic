@@ -67,6 +67,11 @@ public:
     // bfecc clamp
     bool use_bfecc_clamp_;
 
+    // voxelized solid
+    bool use_dynamic_solid_;
+    cudaSurfaceObject_t voxel_tex_;
+    cudaSurfaceObject_t velocity_tex_;
+
     LFM() = default;
     LFM(int3 _tile_dim);
     void Alloc(int3 _tile_dim);

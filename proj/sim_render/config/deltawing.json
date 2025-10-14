@@ -244,6 +244,7 @@
         "rk_order": 4,
         "use_bfecc_clamp": true,
         "use_static_solid": true,
+        "use_dynamic_solid": false,
         "solid_sdf_path": "./assets/deltawing/solid_sdf.npy"
     },
     "driver": {
