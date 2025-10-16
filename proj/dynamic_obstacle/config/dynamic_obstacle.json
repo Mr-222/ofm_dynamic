@@ -261,6 +261,7 @@
         "rk_order": 4,
         "use_bfecc_clamp": true,
         "use_static_solid": false,
+        "use_dynamic_solid": true,
         "solid_sdf_path": ""
     },
     "driver": {

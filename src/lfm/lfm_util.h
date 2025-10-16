@@ -41,6 +41,8 @@ void SetWallBcAsync(DHMemory<uint8_t>& _is_bc_x, DHMemory<uint8_t>& _is_bc_y, DH
 
 void SetBcByPhiAsync(DHMemory<uint8_t>& _is_bc_x, DHMemory<uint8_t>& _is_bc_y, DHMemory<uint8_t>& _is_bc_z, DHMemory<float>& _bc_val_x, DHMemory<float>& _bc_val_y, DHMemory<float>& _bc_val_z, int3 _tile_dim, const DHMemory<float>& _phi, cudaStream_t _stream);
 
+void SetBcBySurfaceAsync(DHMemory<uint8_t>& _is_bc_x, DHMemory<uint8_t>& _is_bc_y, DHMemory<uint8_t>& _is_bc_z, DHMemory<float>& _bc_val_x, DHMemory<float>& _bc_val_y, DHMemory<float>& _bc_val_z, int3 _tile_dim, const cudaSurfaceObject_t& surface, cudaStream_t _stream);
+
 void SetCoefByIsBcAsync(DHMemory<uint8_t>& _is_dof, DHMemory<float>& _a_diag, DHMemory<float>& _a_x, DHMemory<float>& _a_y, DHMemory<float>& _a_z, int3 _tile_dim, const DHMemory<uint8_t>& _is_bc_x, const DHMemory<uint8_t>& _is_bc_y, const DHMemory<uint8_t>& _is_bc_z, cudaStream_t _stream);
 
 void AdvectN2XAsync(DHMemory<float>& _dst, int3 _tile_dim, const DHMemory<float>& _src, const DHMemory<float>& _u_x, const DHMemory<float>& _u_y, const DHMemory<float>& _u_z,
