@@ -39,11 +39,7 @@ void InitLFMAsync(LFM& _lfm, const LFMConfiguration& _config, cudaStream_t _stre
         SetBcByPhiAsync(*_lfm.is_bc_x_, *_lfm.is_bc_y_, *_lfm.is_bc_z_, *_lfm.bc_val_x_, *_lfm.bc_val_y_, *_lfm.bc_val_z_, tile_dim, solid_sdf, _stream);
     }
 
-    // dynamic_boundary
     _lfm.use_dynamic_solid_ = _config.use_dynamic_solid;
-    if (_lfm.use_dynamic_solid_) {
-        SetBcBySurfaceAsync(*_lfm.is_bc_x_, *_lfm.is_bc_y_, *_lfm.is_bc_z_, *_lfm.bc_val_x_, *_lfm.bc_val_y_, *_lfm.bc_val_z_, tile_dim, _lfm.voxel_tex_, _stream);
-    }
 
     // poisson
     {

@@ -257,7 +257,7 @@
             1
         ],
         "inlet_norm": 0.6,
-        "inlet_angle": 20,
+        "inlet_angle": 0,
         "rk_order": 4,
         "use_bfecc_clamp": true,
         "use_static_solid": false,

@@ -76,6 +76,7 @@ public:
     LFM(int3 _tile_dim);
     void Alloc(int3 _tile_dim);
 
+    void UpdateBoundary(cudaStream_t _stream);
     void AdvanceAsync(float _dt, cudaStream_t _stream);
     void ReinitAsync(float _dt, cudaStream_t _stream);
     void ResetForwardFlowMapAsync(cudaStream_t _stream);

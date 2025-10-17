@@ -74,6 +74,16 @@ void LFM::Alloc(int3 _tile_dim)
     amgpcg_.Alloc(_tile_dim, level_num);
 }
 
+void LFM::UpdateBoundary(cudaStream_t _stream)
+{
+    if (use_dynamic_solid_) {
+        SetBcBySurfaceAsync(*is_bc_x_, *is_bc_y_, *is_bc_z_, *bc_val_x_, *bc_val_y_, *bc_val_z_, tile_dim_, voxel_tex_, _stream);
+        SetCoefByIsBcAsync(*(amgpcg_.poisson_vector_[0].is_dof_), *(amgpcg_.poisson_vector_[0].a_diag_), *(amgpcg_.poisson_vector_[0].a_x_), *(amgpcg_.poisson_vector_[0].a_y_),
+                                   *(amgpcg_.poisson_vector_[0].a_z_), tile_dim_, *is_bc_x_, *is_bc_y_, *is_bc_z_, _stream);
+        amgpcg_.BuildAsync(6.0f, -1.0f, _stream);
+    }
+}
+
 void LFM::AdvanceAsync(float _dt, cudaStream_t _stream)
 {
     float mid_dt;
