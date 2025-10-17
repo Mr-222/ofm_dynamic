@@ -1102,7 +1102,7 @@ void SetBcByPhiAsync(DHMemory<uint8_t>& _is_bc_x, DHMemory<uint8_t>& _is_bc_y, D
     SetBcByPhiKernel<<<Prod(_tile_dim), 128, 0, _stream>>>(is_bc_x, is_bc_y, is_bc_z, bc_val_x, bc_val_y, bc_val_z, _tile_dim, phi);
 }
 
-__global__ void SetBcBySurfaceKernel(uint8_t* _is_bc_x, uint8_t* _is_bc_y, uint8_t* _is_bc_z, float* _bc_val_x, float* _bc_val_y, float* _bc_val_z, int3 _tile_dim, cudaSurfaceObject_t surface)
+__global__ void SetBcBySurfaceKernel(uint8_t* _is_bc_x, uint8_t* _is_bc_y, uint8_t* _is_bc_z, float* _bc_val_x, float* _bc_val_y, float* _bc_val_z, int3 _tile_dim, cudaSurfaceObject_t surface, int frame_idx)
 {
     int tile_idx    = blockIdx.x;
     int3 tile_ijk   = TileIdxToIjk(_tile_dim, tile_idx);
@@ -1115,8 +1115,9 @@ __global__ void SetBcBySurfaceKernel(uint8_t* _is_bc_x, uint8_t* _is_bc_y, uint8
         int3 voxel_ijk   = VoxelIdxToIjk(voxel_idx);
         int3 ijk         = { tile_ijk.x * 8 + voxel_ijk.x, tile_ijk.y * 8 + voxel_ijk.y, tile_ijk.z * 8 + voxel_ijk.z };
 
-        auto boundary = surf3Dread<uint8_t>(surface, ijk.x * sizeof(uint8_t), ijk.z, ijk.y, cudaBoundaryModeTrap);
+        uint8_t boundary = surf3Dread<uchar1>(surface, ijk.x, ijk.z, ijk.y, cudaBoundaryModeTrap).x;
         if (boundary != 0) {
+            //printf("frame: %d, boundary: %d, x,z,depth: (%d, %d, %d)\n", frame_idx, boundary, ijk.x, ijk.z, ijk.y);
             _is_bc_x[IjkToIdx(x_tile_dim, ijk)]                                  = 1;
             _is_bc_y[IjkToIdx(y_tile_dim, ijk)]                                  = 1;
             _is_bc_z[IjkToIdx(z_tile_dim, ijk)]                                  = 1;
@@ -1133,7 +1134,8 @@ __global__ void SetBcBySurfaceKernel(uint8_t* _is_bc_x, uint8_t* _is_bc_y, uint8
     }
 }
 
-void SetBcBySurfaceAsync(DHMemory<uint8_t>& _is_bc_x, DHMemory<uint8_t>& _is_bc_y, DHMemory<uint8_t>& _is_bc_z, DHMemory<float>& _bc_val_x, DHMemory<float>& _bc_val_y, DHMemory<float>& _bc_val_z, int3 _tile_dim, const cudaSurfaceObject_t& surface, cudaStream_t _stream)
+void SetBcBySurfaceAsync(DHMemory<uint8_t>& _is_bc_x, DHMemory<uint8_t>& _is_bc_y, DHMemory<uint8_t>& _is_bc_z, DHMemory<float>& _bc_val_x, DHMemory<float>& _bc_val_y, DHMemory<float>& _bc_val_z,
+    int3 _tile_dim, const cudaSurfaceObject_t& surface, cudaStream_t _stream, int frame_idx)
 {
     uint8_t* is_bc_x    = _is_bc_x.dev_ptr_;
     uint8_t* is_bc_y    = _is_bc_y.dev_ptr_;
@@ -1141,7 +1143,7 @@ void SetBcBySurfaceAsync(DHMemory<uint8_t>& _is_bc_x, DHMemory<uint8_t>& _is_bc_
     float* bc_val_x  = _bc_val_x.dev_ptr_;
     float* bc_val_y  = _bc_val_y.dev_ptr_;
     float* bc_val_z  = _bc_val_z.dev_ptr_;
-    SetBcBySurfaceKernel<<<Prod(_tile_dim), 128, 0, _stream>>>(is_bc_x, is_bc_y, is_bc_z, bc_val_x, bc_val_y, bc_val_z, _tile_dim, surface);
+    SetBcBySurfaceKernel<<<Prod(_tile_dim), 128, 0, _stream>>>(is_bc_x, is_bc_y, is_bc_z, bc_val_x, bc_val_y, bc_val_z, _tile_dim, surface, frame_idx);
 }
 
 __global__ void SetCoefByIsBcKernel(uint8_t* _is_dof, float* _a_diag, float* _a_x, float* _a_y, float* _a_z, int3 _tile_dim, const uint8_t* _is_bc_x, const uint8_t* _is_bc_y, const uint8_t* _is_bc_z)

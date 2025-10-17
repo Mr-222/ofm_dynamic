@@ -50,11 +50,11 @@ void PhysicsEngineUser::initExternalMem()
 #else
         fd_voxel,
 #endif
-        voxel_image.extent.width * voxel_image.extent.height * voxel_image.numLayers * sizeof(uint8_t),
+        voxel_image.extent.width * voxel_image.extent.height * voxel_image.extent.depth * sizeof(uint8_t),
         sizeof(uint8_t),
         voxel_image.extent.width,
         voxel_image.extent.height,
-        voxel_image.numLayers,
+        voxel_image.extent.depth,
         voxel_image.format,
         "voxel"
     };
@@ -126,6 +126,7 @@ void PhysicsEngineUser::step()
         lfm_.AdvanceAsync(dt, streamToRun);
         lfm_.ReinitAsync(dt, streamToRun);
         current_frame++;
+        cudaDeviceSynchronize();
     }
 }
 
