@@ -86,32 +86,13 @@ void LFM::UpdateBoundary(cudaStream_t _stream)
 
 void LFM::AdvanceAsync(float _dt, cudaStream_t _stream)
 {
-    float mid_dt;
-    std::shared_ptr<DHMemory<float>> last_proj_u_x;
-    std::shared_ptr<DHMemory<float>> last_proj_u_y;
-    std::shared_ptr<DHMemory<float>> last_proj_u_z;
-    std::shared_ptr<DHMemory<float>> src_u_x;
-    std::shared_ptr<DHMemory<float>> src_u_y;
-    std::shared_ptr<DHMemory<float>> src_u_z;
-
-    //if (step_ == 0) {
-        mid_dt        = 0.5f * _dt;
-        last_proj_u_x = init_u_x_;
-        last_proj_u_y = init_u_y_;
-        last_proj_u_z = init_u_z_;
-        src_u_x       = init_u_x_;
-        src_u_y       = init_u_y_;
-        src_u_z       = init_u_z_;
-    //}
-    // else {
-    //     mid_dt        = 0.5f * _dt;
-    //     last_proj_u_x = init_u_x_;
-    //     last_proj_u_y = init_u_y_;
-    //     last_proj_u_z = init_u_z_;
-    //     src_u_x       = mid_u_x_;
-    //     src_u_y       = mid_u_y_;
-    //     src_u_z       = mid_u_z_;
-    // }
+    float mid_dt = 0.5f * _dt;
+    std::shared_ptr<DHMemory<float>> last_proj_u_x = init_u_x_;
+    std::shared_ptr<DHMemory<float>> last_proj_u_y = init_u_y_;
+    std::shared_ptr<DHMemory<float>> last_proj_u_z = init_u_z_;
+    std::shared_ptr<DHMemory<float>> src_u_x = init_u_x_;
+    std::shared_ptr<DHMemory<float>> src_u_y = init_u_y_;
+    std::shared_ptr<DHMemory<float>> src_u_z = init_u_z_;
 
     AdvectN2XAsync(*tmp_u_x_, tile_dim_, *src_u_x, *last_proj_u_x, *last_proj_u_y, *last_proj_u_z, dx_, mid_dt, _stream);
     AdvectN2YAsync(*tmp_u_y_, tile_dim_, *src_u_y, *last_proj_u_x, *last_proj_u_y, *last_proj_u_z, dx_, mid_dt, _stream);
