@@ -126,7 +126,6 @@ void PhysicsEngineUser::step()
         lfm_.AdvanceAsync(dt, streamToRun);
         lfm_.ReinitAsync(dt, streamToRun);
         current_frame++;
-        cudaDeviceSynchronize();
     }
 }
 

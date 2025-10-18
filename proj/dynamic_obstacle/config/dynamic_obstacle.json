@@ -9,7 +9,7 @@
     "height": 900,
     "camera": {
         "position": [
-            0.5,
+            1.5,
             0.5,
             1.5
         ],
@@ -266,7 +266,7 @@
     },
     "driver": {
         "total_frame": -1,
-        "frame_rate": 40,
+        "frame_rate": 30,
         "steps_per_frame": 5
     },
     "recorder": {
