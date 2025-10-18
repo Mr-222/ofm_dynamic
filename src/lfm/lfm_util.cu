@@ -1115,7 +1115,8 @@ __global__ void SetBcBySurfaceKernel(uint8_t* _is_bc_x, uint8_t* _is_bc_y, uint8
         int3 voxel_ijk   = VoxelIdxToIjk(voxel_idx);
         int3 ijk         = { tile_ijk.x * 8 + voxel_ijk.x, tile_ijk.y * 8 + voxel_ijk.y, tile_ijk.z * 8 + voxel_ijk.z };
 
-        uint8_t boundary = surf3Dread<uchar1>(surface, ijk.x, ijk.z, ijk.y, cudaBoundaryModeTrap).x;
+        // Note the order of coordinates: x, z, y, since each slice is a x-z plane
+        auto boundary = surf3Dread<uint8_t>(surface, ijk.x, ijk.z, ijk.y, cudaBoundaryModeTrap);
         if (boundary != 0) {
             //printf("frame: %d, boundary: %d, x,z,depth: (%d, %d, %d)\n", frame_idx, boundary, ijk.x, ijk.z, ijk.y);
             _is_bc_x[IjkToIdx(x_tile_dim, ijk)]                                  = 1;
