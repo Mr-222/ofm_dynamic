@@ -66,11 +66,11 @@ void PhysicsEngineUser::initExternalMem()
 #else
         fd_velocity,
 #endif
-        velocity_image.extent.width * velocity_image.extent.height * velocity_image.numLayers * 8, // R16G16B16A16
-        8,
+        velocity_image.extent.width * velocity_image.extent.height * velocity_image.extent.depth * 16, // R32G32B32A32
+        16,
         velocity_image.extent.width,
         velocity_image.extent.height,
-        velocity_image.numLayers,
+        velocity_image.extent.depth,
         velocity_image.format,
         "velocity"
     };

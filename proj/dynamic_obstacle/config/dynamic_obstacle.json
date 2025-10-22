@@ -50,7 +50,7 @@
             "initial_position": [1, 0.5, 0.5],
             "initial_rotation": [0, 0, 0],
             "initial_scale": [0.2, 0.2, 0.2],
-            "angular_velocity": [0, 0, 0]
+            "angular_velocity": [0, 30, 0]
         },
         {
             "name": "plane1",
