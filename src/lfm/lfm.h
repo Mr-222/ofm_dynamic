@@ -71,6 +71,7 @@ public:
     bool use_dynamic_solid_;
     cudaSurfaceObject_t voxel_tex_;
     cudaSurfaceObject_t velocity_tex_;
+    float voxelized_velocity_scaler_;
 
     LFM() = default;
     LFM(int3 _tile_dim);

@@ -161,6 +161,11 @@ std::function<void(VkCommandBuffer)> UIEngineUser::getDrawUIFunction()
 
         drawAxis();
 
+        ImGui::Begin("LFM");
+        ImGui::DragFloat("Inlet angle", &g_ctx.rm->inlet_angle, 0.3f, 0, 20);
+        ImGui::DragFloat("Boundary velocity scaler", &g_ctx.rm->voxelized_velocity_scaler, 0.1f,0, 4);
+        ImGui::End();
+
         ImGui::Render();
         ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), commandBuffer);
     };

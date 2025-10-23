@@ -120,8 +120,9 @@ void PhysicsEngineUser::step()
     signalSemaphore(cuUpdateSemaphore);
 
     if (total_frame < 0 || current_frame < total_frame) {
-        float dt          = 1.0f / static_cast<float>(frame_rate);
-        lfm_.inlet_angle_ = g_ctx->rm->inlet_angle;
+        float dt            = 1.0f / static_cast<float>(frame_rate);
+        lfm_.inlet_angle_   = g_ctx->rm->inlet_angle;
+        lfm_.voxelized_velocity_scaler_ = g_ctx->rm->voxelized_velocity_scaler;
         lfm_.UpdateBoundary(streamToRun);
         lfm_.AdvanceAsync(dt, streamToRun);
         lfm_.ReinitAsync(dt, streamToRun);
