@@ -113,12 +113,12 @@ void LFM::ReinitAsync(float _dt, cudaStream_t _stream)
     int3 z_tile_dim = { tile_dim_.x, tile_dim_.y, tile_dim_.z + 1 };
     ResetForwardFlowMapAsync(_stream);
     ResetBackwardFlowMapAsync(_stream);
-    RKAxisAsync(rk_order_, *psi_x_, *T_x_, tile_dim_, x_tile_dim, *mid_u_x_, *mid_u_y_, *mid_u_z_, grid_origin_, dx_, _dt, _stream);
-    RKAxisAsync(rk_order_, *psi_y_, *T_y_, tile_dim_, y_tile_dim, *mid_u_x_, *mid_u_y_, *mid_u_z_, grid_origin_, dx_, _dt, _stream);
-    RKAxisAsync(rk_order_, *psi_z_, *T_z_, tile_dim_, z_tile_dim, *mid_u_x_, *mid_u_y_, *mid_u_z_, grid_origin_, dx_, _dt, _stream);
-    RKAxisAsync(rk_order_, *phi_x_, *F_x_, tile_dim_, x_tile_dim, *mid_u_x_, *mid_u_y_, *mid_u_z_, grid_origin_, dx_, -_dt, _stream);
-    RKAxisAsync(rk_order_, *phi_y_, *F_y_, tile_dim_, y_tile_dim, *mid_u_x_, *mid_u_y_, *mid_u_z_, grid_origin_, dx_, -_dt, _stream);
-    RKAxisAsync(rk_order_, *phi_z_, *F_z_, tile_dim_, z_tile_dim, *mid_u_x_, *mid_u_y_, *mid_u_z_, grid_origin_, dx_, -_dt, _stream);
+    RKAxisAsync(*psi_x_, *T_x_, tile_dim_, x_tile_dim, *mid_u_x_, *mid_u_y_, *mid_u_z_, grid_origin_, dx_, _dt, _stream);
+    RKAxisAsync(*psi_y_, *T_y_, tile_dim_, y_tile_dim, *mid_u_x_, *mid_u_y_, *mid_u_z_, grid_origin_, dx_, _dt, _stream);
+    RKAxisAsync(*psi_z_, *T_z_, tile_dim_, z_tile_dim, *mid_u_x_, *mid_u_y_, *mid_u_z_, grid_origin_, dx_, _dt, _stream);
+    RKAxisAsync(*phi_x_, *F_x_, tile_dim_, x_tile_dim, *mid_u_x_, *mid_u_y_, *mid_u_z_, grid_origin_, dx_, -_dt, _stream);
+    RKAxisAsync(*phi_y_, *F_y_, tile_dim_, y_tile_dim, *mid_u_x_, *mid_u_y_, *mid_u_z_, grid_origin_, dx_, -_dt, _stream);
+    RKAxisAsync(*phi_z_, *F_z_, tile_dim_, z_tile_dim, *mid_u_x_, *mid_u_y_, *mid_u_z_, grid_origin_, dx_, -_dt, _stream);
     PullbackAxisAsync(*u_x_, tile_dim_, x_tile_dim, *init_u_x_, *init_u_y_, *init_u_z_, *psi_x_, *T_x_, grid_origin_, dx_, _stream);
     PullbackAxisAsync(*u_y_, tile_dim_, y_tile_dim, *init_u_x_, *init_u_y_, *init_u_z_, *psi_y_, *T_y_, grid_origin_, dx_, _stream);
     PullbackAxisAsync(*u_z_, tile_dim_, z_tile_dim, *init_u_x_, *init_u_y_, *init_u_z_, *psi_z_, *T_z_, grid_origin_, dx_, _stream);

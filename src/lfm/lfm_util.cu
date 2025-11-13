@@ -411,7 +411,72 @@ __global__ void RK4AxisKernel(float3* _psi_axis, float3* _T_axis, int3 _tile_dim
     }
 }
 
-void RKAxisAsync(int _rk_order, DHMemory<float3>& _psi_axis, DHMemory<float3>& _T_axis, int3 _tile_dim, int3 _axis_tile_dim,
+__global__ void TVDRK3AxisKernel(float3* _psi_axis, float3* _T_axis, int3 _tile_dim, const float* _u_x,
+                               const float* _u_y, const float* _u_z, float3 _grid_origin, float _inv_dx, float _dt)
+{
+    int tile_idx = blockIdx.x;
+    int t_id     = threadIdx.x;
+
+    const float one_third   = 1.0f / 3.0f;
+    const float two_thirds  = 2.0f / 3.0f;
+    const float one_fourth  = 0.25f;
+    const float three_fourths = 0.75f;
+
+    for (int i = 0; i < 4; i++) {
+        int voxel_idx = t_id + i * 128;
+        int idx       = tile_idx * 512 + voxel_idx;
+
+        float3x3 grad;
+
+        float3 pos = _psi_axis[idx];
+        float3 T   = _T_axis[idx];
+
+        pos = { pos.x - _grid_origin.x,
+                               pos.y - _grid_origin.y,
+                               pos.z - _grid_origin.z };
+
+        // --- Stage 1 ---
+        float3 u1       = InterpMacN2Grad(grad, _tile_dim, _u_x, _u_y, _u_z, pos, _inv_dx);
+        float3 dT1      = MatMulVec(grad, T);
+
+        float3 pos_1 = { pos.x - _dt * u1.x,
+                         pos.y - _dt * u1.y,
+                         pos.z - _dt * u1.z };
+        float3 T_1   = { T.x - _dt * dT1.x,
+                         T.y - _dt * dT1.y,
+                         T.z - _dt * dT1.z };
+
+        // --- Stage 2 ---
+        float3 u2       = InterpMacN2Grad(grad, _tile_dim, _u_x, _u_y, _u_z, pos_1, _inv_dx);
+        float3 dT2      = MatMulVec(grad, T_1);
+
+        float3 pos_2 = { three_fourths * pos.x + one_fourth * (pos_1.x - _dt * u2.x),
+                         three_fourths * pos.y + one_fourth * (pos_1.y - _dt * u2.y),
+                         three_fourths * pos.z + one_fourth * (pos_1.z - _dt * u2.z) };
+        float3 T_2   = { three_fourths * T.x + one_fourth * (T_1.x - _dt * dT2.x),
+                         three_fourths * T.y + one_fourth * (T_1.y - _dt * dT2.y),
+                         three_fourths * T.z + one_fourth * (T_1.z - _dt * dT2.z) };
+
+        // --- Stage 3 ---
+        float3 u3       = InterpMacN2Grad(grad, _tile_dim, _u_x, _u_y, _u_z, pos_2, _inv_dx);
+        float3 dT3      = MatMulVec(grad, T_2);
+
+        float3 final_pos_local = { one_third * pos.x + two_thirds * (pos_2.x - _dt * u3.x),
+                                   one_third * pos.y + two_thirds * (pos_2.y - _dt * u3.y),
+                                   one_third * pos.z + two_thirds * (pos_2.z - _dt * u3.z) };
+        float3 final_T         = { one_third * T.x + two_thirds * (T_2.x - _dt * dT3.x),
+                                   one_third * T.y + two_thirds * (T_2.y - _dt * dT3.y),
+                                   one_third * T.z + two_thirds * (T_2.z - _dt * dT3.z) };
+
+        // --- Final Update ---
+        _psi_axis[idx] = { final_pos_local.x + _grid_origin.x,
+                           final_pos_local.y + _grid_origin.y,
+                           final_pos_local.z + _grid_origin.z };
+        _T_axis[idx] = final_T;
+    }
+}
+
+void RKAxisAsync(DHMemory<float3>& _psi_axis, DHMemory<float3>& _T_axis, int3 _tile_dim, int3 _axis_tile_dim,
                  const DHMemory<float>& _u_x, const DHMemory<float>& _u_y, const DHMemory<float>& _u_z, float3 _grid_origin, float _dx, float _dt, cudaStream_t _stream)
 {
     float3* psi_axis  = _psi_axis.dev_ptr_;
@@ -421,10 +486,7 @@ void RKAxisAsync(int _rk_order, DHMemory<float3>& _psi_axis, DHMemory<float3>& _
     const float* u_z  = _u_z.dev_ptr_;
     int axis_tile_num = Prod(_axis_tile_dim);
     float inv_dx      = 1.0f / _dx;
-    if (_rk_order == 2)
-        RK2AxisKernel<<<axis_tile_num, 128, 0, _stream>>>(psi_axis, T_axis, _tile_dim, u_x, u_y, u_z, _grid_origin, inv_dx, _dt);
-    else if (_rk_order == 4)
-        RK4AxisKernel<<<axis_tile_num, 128, 0, _stream>>>(psi_axis, T_axis, _tile_dim, u_x, u_y, u_z, _grid_origin, inv_dx, _dt);
+    TVDRK3AxisKernel<<<axis_tile_num, 128, 0, _stream>>>(psi_axis, T_axis, _tile_dim, u_x, u_y, u_z, _grid_origin, inv_dx, _dt);
 }
 
 __device__ float3 InterpMacN2(int3 _tile_dim, const float* _u_x, const float* _u_y, const float* _u_z, float3 _trans_pos, float _inv_dx)

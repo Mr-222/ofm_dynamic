@@ -11,7 +11,6 @@ public:
     float3 grid_origin_;
 
     // simulation parameters
-    int rk_order_ = 4;
     int step_;
 
     // boundary

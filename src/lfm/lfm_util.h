@@ -13,7 +13,7 @@ void ResetToIdentityYASync(DHMemory<float3>& _psi_y, DHMemory<float3>& _T_y, int
 
 void ResetToIdentityZASync(DHMemory<float3>& _psi_z, DHMemory<float3>& _T_z, int3 _z_tile_dim, float3 _grid_origin, float _dx, cudaStream_t _stream);
 
-void RKAxisAsync(int _rk_order, DHMemory<float3>& _psi_axis, DHMemory<float3>& _T_axis, int3 _tile_dim, int3 _axis_tile_dim,
+void RKAxisAsync(DHMemory<float3>& _psi_axis, DHMemory<float3>& _T_axis, int3 _tile_dim, int3 _axis_tile_dim,
                  const DHMemory<float>& _u_x, const DHMemory<float>& _u_y, const DHMemory<float>& _u_z, float3 _grid_origin, float _dx, float _dt, cudaStream_t _stream);
 
 void PullbackAxisAsync(DHMemory<float>& _dst_axis, int3 _tile_dim, int3 _axis_tile_dim, const DHMemory<float>& _src_x, const DHMemory<float>& _src_y, const DHMemory<float>& _src_z,

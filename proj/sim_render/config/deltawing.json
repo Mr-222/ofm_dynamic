@@ -242,7 +242,6 @@
         "inlet_norm": 0.6,
         "inlet_angle": 20,
         "voxelized_velocity_scaler" : 1.0,
-        "rk_order": 4,
         "use_bfecc_clamp": true,
         "use_static_solid": true,
         "use_dynamic_solid": false,

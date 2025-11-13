@@ -9,7 +9,6 @@ void InitLFMAsync(LFM& _lfm, const LFMConfiguration& _config, cudaStream_t _stre
     _lfm.Alloc(tile_dim);
 
     // simulation parameter
-    _lfm.rk_order_ = _config.rk_order;
     _lfm.step_     = 0;
 
     // domain
