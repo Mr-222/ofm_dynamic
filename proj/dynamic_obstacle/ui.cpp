@@ -162,7 +162,8 @@ std::function<void(VkCommandBuffer)> UIEngineUser::getDrawUIFunction()
         drawAxis();
 
         ImGui::Begin("LFM");
-        ImGui::DragFloat("Inlet angle", &g_ctx.rm->inlet_angle, 0.3f, 0, 20);
+        ImGui::DragFloat("Inlet angle", &g_ctx.rm->inlet_angle, 0.3f, 0, 90);
+        ImGui::DragFloat("Inlet norm", &g_ctx.rm->inlet_norm, 0.005f, 0, 0.3f);
         ImGui::DragFloat("Boundary velocity scaler", &g_ctx.rm->voxelized_velocity_scaler, 0.1f,0, 4);
         ImGui::End();
 

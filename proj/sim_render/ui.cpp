@@ -163,6 +163,7 @@ std::function<void(VkCommandBuffer)> UIEngineUser::getDrawUIFunction()
 
         ImGui::Begin("Inlet");
         ImGui::DragFloat("angle", &(g_ctx.rm->inlet_angle), 0.3f, 0, 20);
+        ImGui::DragFloat("Inlet norm", &g_ctx.rm->inlet_norm, 0.01f, 0, 0.6f);
         ImGui::End();
 
         ImGui::Render();
