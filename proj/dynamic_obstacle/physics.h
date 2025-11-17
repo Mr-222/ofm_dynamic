@@ -2,9 +2,11 @@
 
 #include "function/physics/cuda_engine.h"
 #include "lfm.h"
+#include "timer.h"
 
 class PhysicsEngineUser : public CudaEngine {
     lfm::LFM lfm_;
+    GPUTimer profiler_;
     virtual void initExternalMem() override;
 
 public:

@@ -92,6 +92,7 @@ void PhysicsEngineUser::init(Configuration& config, GlobalContext* g_ctx)
         lfm_.velocity_tex_      = extImages.at("velocity").surface_object;
     }
     lfm::InitLFMAsync(lfm_, config.at("lfm"), streamToRun);
+    lfm_.SetProfilier(&profiler_);
 }
 
 __global__ void writeToVorticity(cudaSurfaceObject_t surface_object, cudaExtent extent, size_t element_size,
@@ -109,6 +110,9 @@ __global__ void writeToVorticity(cudaSurfaceObject_t surface_object, cudaExtent 
 void PhysicsEngineUser::step()
 {
     waitOnSemaphore(vkUpdateSemaphore);
+
+    profiler_.beginFrame();
+
     lfm::GetCenteralVecAsync(*(lfm_.u_), lfm_.tile_dim_, *(lfm_.init_u_x_), *(lfm_.init_u_y_), *(lfm_.init_u_z_), streamToRun);
     lfm::GetVorNormAsync(*(lfm_.vor_norm_), lfm_.tile_dim_, *(lfm_.u_), lfm_.dx_, streamToRun);
     writeToVorticity<<<32 * 16 * 16, 512, 0, streamToRun>>>(
@@ -129,6 +133,8 @@ void PhysicsEngineUser::step()
         lfm_.ReinitAsync(dt, streamToRun);
         current_frame++;
     }
+
+    profiler_.printResults();
 }
 
 void PhysicsEngineUser::cleanup()

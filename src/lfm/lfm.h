@@ -1,6 +1,7 @@
 #pragma once
 
 #include "amgpcg.h"
+#include "timer.h"
 
 namespace lfm {
 class LFM {
@@ -72,10 +73,13 @@ public:
     cudaSurfaceObject_t velocity_tex_;
     float voxelized_velocity_scaler_;
 
+    // profiler
+    GPUTimer* profiler_ = nullptr;
+
     LFM() = default;
     LFM(int3 _tile_dim);
     void Alloc(int3 _tile_dim);
-
+    void SetProfilier(GPUTimer* _profiler);
     void UpdateBoundary(cudaStream_t _stream);
     void AdvanceAsync(float _dt, cudaStream_t _stream);
     void ReinitAsync(float _dt, cudaStream_t _stream);
