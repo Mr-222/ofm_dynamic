@@ -50,7 +50,7 @@
             "initial_position": [1, 0.5, 0.5],
             "initial_rotation": [0, 0, 0],
             "initial_scale": [0.2, 0.2, 0.2],
-            "angular_velocity": [0, 300, 0]
+            "angular_velocity": [0, 150, 0]
         },
         {
             "name": "plane1",
@@ -258,7 +258,7 @@
         ],
         "inlet_norm": 0.05,
         "inlet_angle": 90,
-        "voxelized_velocity_scaler" : 1.0,
+        "voxelized_velocity_scaler" : 1.8,
         "use_bfecc_clamp": true,
         "use_static_solid": false,
         "use_dynamic_solid": true,

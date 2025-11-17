@@ -128,7 +128,9 @@ void PhysicsEngineUser::step()
         lfm_.inlet_angle_   = g_ctx->rm->inlet_angle;
         lfm_.inlet_norm_    = g_ctx->rm->inlet_norm;
         lfm_.voxelized_velocity_scaler_ = g_ctx->rm->voxelized_velocity_scaler;
-        lfm_.UpdateBoundary(streamToRun);
+        if (current_frame > 0)
+            // skip for the first frame since boundary velocity has not been computed yet
+            lfm_.UpdateBoundary(streamToRun);
         lfm_.AdvanceAsync(dt, streamToRun);
         lfm_.ReinitAsync(dt, streamToRun);
         current_frame++;
