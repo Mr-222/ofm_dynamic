@@ -83,7 +83,6 @@ void PhysicsEngineUser::init(Configuration& config, GlobalContext* g_ctx)
     JSON_GET(DriverConfiguration, driver_cfg, config, "driver")
     total_frame     = driver_cfg.total_frame;
     frame_rate      = driver_cfg.frame_rate;
-    steps_per_frame = driver_cfg.steps_per_frame;
     current_frame   = 0;
     if (static_cast<LFMConfiguration>(config.at("lfm")).use_dynamic_solid) {
         assert(extImages.contains("voxel"));

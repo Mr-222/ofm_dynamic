@@ -266,8 +266,7 @@
     },
     "driver": {
         "total_frame": -1,
-        "frame_rate": 30,
-        "steps_per_frame": 5
+        "frame_rate": 30
     },
     "recorder": {
         "output_path": "./temp/output.mp4",
