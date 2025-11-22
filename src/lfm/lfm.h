@@ -3,8 +3,8 @@
 #include "amgpcg.h"
 #include "timer.h"
 
-namespace lfm {
-class LFM {
+namespace ofm {
+class OFM {
 public:
     // domain
     int3 tile_dim_;
@@ -76,8 +76,8 @@ public:
     // profiler
     GPUTimer* profiler_ = nullptr;
 
-    LFM() = default;
-    LFM(int3 _tile_dim);
+    OFM() = default;
+    OFM(int3 _tile_dim);
     void Alloc(int3 _tile_dim);
     void SetProfilier(GPUTimer* _profiler);
     void UpdateBoundary(cudaStream_t _stream);

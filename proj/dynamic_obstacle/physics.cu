@@ -84,23 +84,23 @@ void PhysicsEngineUser::init(Configuration& config, GlobalContext* g_ctx)
     total_frame     = driver_cfg.total_frame;
     frame_rate      = driver_cfg.frame_rate;
     current_frame   = 0;
-    if (static_cast<LFMConfiguration>(config.at("lfm")).use_dynamic_solid) {
+    if (static_cast<OFMConfiguration>(config.at("ofm")).use_dynamic_solid) {
         assert(extImages.contains("voxel"));
         assert(extImages.contains("velocity"));
-        lfm_.voxel_tex_         = extImages.at("voxel").surface_object;
-        lfm_.velocity_tex_      = extImages.at("velocity").surface_object;
+        ofm_.voxel_tex_         = extImages.at("voxel").surface_object;
+        ofm_.velocity_tex_      = extImages.at("velocity").surface_object;
     }
-    lfm::InitLFMAsync(lfm_, config.at("lfm"), streamToRun);
-    lfm_.SetProfilier(&profiler_);
+    ofm::InitOFMAsync(ofm_, config.at("ofm"), streamToRun);
+    ofm_.SetProfilier(&profiler_);
 }
 
 __global__ void writeToVorticity(cudaSurfaceObject_t surface_object, cudaExtent extent, size_t element_size,
                                  const float* data, int3 tile_dim, float scale)
 {
     int tile_idx   = blockIdx.x;
-    int3 tile_ijk  = lfm::TileIdxToIjk(tile_dim, tile_idx);
+    int3 tile_ijk  = ofm::TileIdxToIjk(tile_dim, tile_idx);
     int voxel_idx  = threadIdx.x;
-    int3 voxel_ijk = lfm::VoxelIdxToIjk(voxel_idx);
+    int3 voxel_ijk = ofm::VoxelIdxToIjk(voxel_idx);
     int3 ijk       = { tile_ijk.x * 8 + voxel_ijk.x, tile_ijk.y * 8 + voxel_ijk.y, tile_ijk.z * 8 + voxel_ijk.z };
     int idx        = ijk.x * tile_dim.y * tile_dim.z * 64 + ijk.y * tile_dim.z * 8 + ijk.z;
     surf3Dwrite(data[idx] * scale, surface_object, ijk.x * element_size, ijk.y, ijk.z);
@@ -112,26 +112,26 @@ void PhysicsEngineUser::step()
 
     profiler_.beginFrame();
 
-    lfm::GetCenteralVecAsync(*(lfm_.u_), lfm_.tile_dim_, *(lfm_.init_u_x_), *(lfm_.init_u_y_), *(lfm_.init_u_z_), streamToRun);
-    lfm::GetVorNormAsync(*(lfm_.vor_norm_), lfm_.tile_dim_, *(lfm_.u_), lfm_.dx_, streamToRun);
+    ofm::GetCenteralVecAsync(*(ofm_.u_), ofm_.tile_dim_, *(ofm_.init_u_x_), *(ofm_.init_u_y_), *(ofm_.init_u_z_), streamToRun);
+    ofm::GetVorNormAsync(*(ofm_.vor_norm_), ofm_.tile_dim_, *(ofm_.u_), ofm_.dx_, streamToRun);
     writeToVorticity<<<32 * 16 * 16, 512, 0, streamToRun>>>(
         extImages["vorticity"].surface_object,
         extImages["vorticity"].extent,
         extImages["vorticity"].element_size,
-        lfm_.vor_norm_->dev_ptr_,
+        ofm_.vor_norm_->dev_ptr_,
         { 32, 16, 16 }, 3.0f);
     signalSemaphore(cuUpdateSemaphore);
 
     if (total_frame < 0 || current_frame < total_frame) {
         float dt            = 1.0f / static_cast<float>(frame_rate);
-        lfm_.inlet_angle_   = g_ctx->rm->inlet_angle;
-        lfm_.inlet_norm_    = g_ctx->rm->inlet_norm;
-        lfm_.voxelized_velocity_scaler_ = g_ctx->rm->voxelized_velocity_scaler;
+        ofm_.inlet_angle_   = g_ctx->rm->inlet_angle;
+        ofm_.inlet_norm_    = g_ctx->rm->inlet_norm;
+        ofm_.voxelized_velocity_scaler_ = g_ctx->rm->voxelized_velocity_scaler;
         if (current_frame > 0)
             // skip for the first frame since boundary velocity has not been computed yet
-            lfm_.UpdateBoundary(streamToRun);
-        lfm_.AdvanceAsync(dt, streamToRun);
-        lfm_.ReinitAsync(dt, streamToRun);
+            ofm_.UpdateBoundary(streamToRun);
+        ofm_.AdvanceAsync(dt, streamToRun);
+        ofm_.ReinitAsync(dt, streamToRun);
         current_frame++;
     }
 

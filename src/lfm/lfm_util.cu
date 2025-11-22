@@ -2,7 +2,7 @@
 #include "util.h"
 #include <iostream>
 
-namespace lfm {
+namespace ofm {
 __global__ void GetCentralVecKernel(float3* _vec, int3 _tile_dim, const float* _vec_x, const float* _vec_y, const float* _vec_z)
 {
     int tile_idx  = blockIdx.x;

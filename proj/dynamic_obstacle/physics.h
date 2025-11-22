@@ -5,7 +5,7 @@
 #include "timer.h"
 
 class PhysicsEngineUser : public CudaEngine {
-    lfm::LFM lfm_;
+    ofm::OFM ofm_;
     GPUTimer profiler_;
     virtual void initExternalMem() override;
 

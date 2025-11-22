@@ -2,13 +2,13 @@
 #include "lfm_util.h"
 #include <cub/cub.cuh>
 
-namespace lfm {
-LFM::LFM(int3 _tile_dim)
+namespace ofm {
+OFM::OFM(int3 _tile_dim)
 {
     Alloc(_tile_dim);
 }
 
-void LFM::Alloc(int3 _tile_dim)
+void OFM::Alloc(int3 _tile_dim)
 {
     tile_dim_     = _tile_dim;
 
@@ -73,12 +73,12 @@ void LFM::Alloc(int3 _tile_dim)
     amgpcg_.Alloc(_tile_dim, level_num);
 }
 
-void LFM::SetProfilier(GPUTimer* _profiler) {
+void OFM::SetProfilier(GPUTimer* _profiler) {
     profiler_ = _profiler;
 }
 
 
-void LFM::UpdateBoundary(cudaStream_t _stream)
+void OFM::UpdateBoundary(cudaStream_t _stream)
 {
     if (use_dynamic_solid_) {
         {
@@ -95,7 +95,7 @@ void LFM::UpdateBoundary(cudaStream_t _stream)
     }
 }
 
-void LFM::AdvanceAsync(float _dt, cudaStream_t _stream)
+void OFM::AdvanceAsync(float _dt, cudaStream_t _stream)
 {
     float mid_dt = 0.5f * _dt;
     std::shared_ptr<DHMemory<float>> last_proj_u_x = init_u_x_;
@@ -126,7 +126,7 @@ void LFM::AdvanceAsync(float _dt, cudaStream_t _stream)
     step_++;
 }
 
-void LFM::ReinitAsync(float _dt, cudaStream_t _stream)
+void OFM::ReinitAsync(float _dt, cudaStream_t _stream)
 {
     int3 x_tile_dim = { tile_dim_.x + 1, tile_dim_.y, tile_dim_.z };
     int3 y_tile_dim = { tile_dim_.x, tile_dim_.y + 1, tile_dim_.z };
@@ -190,7 +190,7 @@ void LFM::ReinitAsync(float _dt, cudaStream_t _stream)
     init_u_z_.swap(tmp_u_z_);
 }
 
-void LFM::ResetForwardFlowMapAsync(cudaStream_t _stream)
+void OFM::ResetForwardFlowMapAsync(cudaStream_t _stream)
 {
     int3 x_tile_dim = { tile_dim_.x + 1, tile_dim_.y, tile_dim_.z };
     int3 y_tile_dim = { tile_dim_.x, tile_dim_.y + 1, tile_dim_.z };
@@ -200,7 +200,7 @@ void LFM::ResetForwardFlowMapAsync(cudaStream_t _stream)
     ResetToIdentityZASync(*phi_z_, *F_z_, z_tile_dim, grid_origin_, dx_, _stream);
 }
 
-void LFM::ResetBackwardFlowMapAsync(cudaStream_t _stream)
+void OFM::ResetBackwardFlowMapAsync(cudaStream_t _stream)
 {
     int3 x_tile_dim = { tile_dim_.x + 1, tile_dim_.y, tile_dim_.z };
     int3 y_tile_dim = { tile_dim_.x, tile_dim_.y + 1, tile_dim_.z };
@@ -210,7 +210,7 @@ void LFM::ResetBackwardFlowMapAsync(cudaStream_t _stream)
     ResetToIdentityZASync(*psi_z_, *T_z_, z_tile_dim, grid_origin_, dx_, _stream);
 }
 
-void LFM::ProjectAsync(cudaStream_t _stream)
+void OFM::ProjectAsync(cudaStream_t _stream)
 {
     int3 x_tile_dim = { tile_dim_.x + 1, tile_dim_.y, tile_dim_.z };
     int3 y_tile_dim = { tile_dim_.x, tile_dim_.y + 1, tile_dim_.z };

@@ -2,7 +2,7 @@
 
 #include "mem.h"
 
-namespace lfm {
+namespace ofm {
 void GetCenteralVecAsync(DHMemory<float3>& _vec, int3 _tile_dim, const DHMemory<float>& _vec_x, const DHMemory<float>& _vec_y, const DHMemory<float>& _vec_z, cudaStream_t _stream);
 
 void GetVorNormAsync(DHMemory<float>& _vor_norm, int3 _tile_dim, const DHMemory<float3>& _u, float _dx, cudaStream_t _stream);

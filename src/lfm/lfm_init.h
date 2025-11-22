@@ -3,6 +3,6 @@
 #include "core/config/config.h"
 #include "lfm.h"
 
-namespace lfm {
-void InitLFMAsync(LFM& _lfm, const LFMConfiguration& _config, cudaStream_t _stream);
+namespace ofm {
+void InitOFMAsync(OFM& _ofm, const OFMConfiguration& _config, cudaStream_t _stream);
 }
