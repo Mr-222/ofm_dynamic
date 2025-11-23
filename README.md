@@ -43,7 +43,7 @@ xmake build
 
 ## Run
 
-At proj/sim_render, run the executable file in proj/dynamic_obstacle:
+Run the executable file in proj/dynamic_obstacle:
 ```
 .\build\dynamic_obstacle.exe
 ```
