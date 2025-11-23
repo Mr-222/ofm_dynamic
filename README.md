@@ -1,5 +1,5 @@
 # ONE-STEP FLOW MAPS FOR REAL-TIME FLUID SIMULATION WITH DYNAMIC BOUNDARIES
-This repository contains the code for my graduation thesis at Georgia Tech.
+This repository contains the code for my [master's thesis](Yutong_Sun_MSCS_Thesis.pdf) at Georgia Tech.
 
 ## Build Instructions
 We use xmake for cross-platform compilation. We successfully compiled the code on machines with Windows 11 and Nvidia RTX 4080. 
