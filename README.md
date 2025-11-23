@@ -49,8 +49,12 @@ At proj/sim_render, run the executable file in proj/dynamic_obstacle:
 ```
 
 You are expected to see:
-![](image/rotating_octa.png)
-
+<div align="center">
+    <img src="image/rotating_octa.png"/>
+</div>
+<div align="center">
+    <img src="image/demo.gif"/>
+</div>
 
 ## Configuration
 
