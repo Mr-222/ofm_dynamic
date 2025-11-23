@@ -1,7 +1,7 @@
 add_rules("mode.release", "mode.debug")
 
 includes("./../src/engine/xmake.lua")
-includes("./../src/lfm/xmake.lua")
+includes("./../src/ofm/xmake.lua")
 
 add_requires("vulkansdk", "glfw 3.4", "glm 1.0.1")
 add_requires("glslang 1.3", { configs = { binaryonly = true } })

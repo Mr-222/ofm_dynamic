@@ -1,6 +1,6 @@
 #include "data_io.h"
-#include "lfm_init.h"
-#include "lfm_util.h"
+#include "ofm_init.h"
+#include "ofm_util.h"
 namespace ofm {
 void InitOFMAsync(OFM& _ofm, const OFMConfiguration& _config, cudaStream_t _stream)
 {

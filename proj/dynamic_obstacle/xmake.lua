@@ -21,8 +21,8 @@ target("dynamic_obstacle")
     add_cuflags("--std c++20", "-lineinfo")
 
     add_deps("engine")
-    add_deps("lfm")
-    
+    add_deps("ofm")
+
     add_packages("imgui")
     add_packages("vulkansdk", "glfw", "glm")
     add_packages("cuda")

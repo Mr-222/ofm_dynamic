@@ -1,5 +1,5 @@
-#include "lfm.h"
-#include "lfm_util.h"
+#include "ofm.h"
+#include "ofm_util.h"
 #include <cub/cub.cuh>
 
 namespace ofm {

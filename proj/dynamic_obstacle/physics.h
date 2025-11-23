@@ -1,7 +1,7 @@
 #pragma once
 
 #include "function/physics/cuda_engine.h"
-#include "lfm.h"
+#include "ofm.h"
 #include "timer.h"
 
 class PhysicsEngineUser : public CudaEngine {
