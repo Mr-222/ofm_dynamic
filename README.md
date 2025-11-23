@@ -16,7 +16,7 @@ The full thesis document can be found [here](Yutong_Sun_MSCS_Thesis.pdf).
 
 
 ## Build Instructions
-We use xmake for cross-platform compilation. We successfully compiled the code on machines with Windows 11 and Nvidia RTX 4080. 
+We use xmake for cross-platform compilation. We successfully compiled the code on machines with Windows 11 and laptop Nvidia RTX 4080. 
 
 ### 1. Clone the repository
 ```
